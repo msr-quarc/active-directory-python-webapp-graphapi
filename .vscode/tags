@@ -1,0 +1,28 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/ec7b6475/
+API_VERSION	..\\config.py	/^API_VERSION = 'v1.0'$/;"	kind:variable	line:9
+AUTHORITY_HOST_URL	..\\config.py	/^AUTHORITY_HOST_URL = "https:\/\/login.microsoftonline.com"$/;"	kind:variable	line:4
+AUTHORITY_URL	..\\app.py	/^AUTHORITY_URL = config.AUTHORITY_HOST_URL + '\/' + config.TENANT$/;"	kind:variable	line:19
+BASE_URL	..\\app.py	/^BASE_URL = 'http:\/\/localhost:5000'$/;"	kind:variable	line:16
+CLIENT_ID	..\\config.py	/^CLIENT_ID = "4bb3b469-4d58-4e5d-a33a-a94b6f14901f"  # copy the Application ID of your app from y/;"	kind:variable	line:5
+CLIENT_SECRET	..\\config.py	/^CLIENT_SECRET = os.environ['pythonWebApp']  # copy the value of key you generated when setting u/;"	kind:variable	line:6
+REDIRECT_URI	..\\app.py	/^REDIRECT_URI = '{}\/landingPage'.format(BASE_URL)$/;"	kind:variable	line:20
+RESOURCE	..\\config.py	/^RESOURCE = "https:\/\/graph.microsoft.com"  # Add the resource you want the access token for$/;"	kind:variable	line:2
+TEMPLATE_AUTHZ_URL	..\\app.py	/^TEMPLATE_AUTHZ_URL = (AUTHORITY_URL + '\/oauth2\/authorize?' +$/;"	kind:variable	line:21
+TENANT	..\\config.py	/^TENANT = "microsoft.onmicrosoft.com"  # Enter tenant name, e.g. contoso.onmicrosoft.com$/;"	kind:variable	line:3
+app	..\\app.py	/^app = flask.Flask(__name__)$/;"	kind:variable	line:9
+app.py	..\\app.py	1;"	kind:file	line:1
+bootstrap	..\\app.py	/^bootstrap = Bootstrap(app)$/;"	kind:variable	line:12
+config.py	..\\config.py	1;"	kind:file	line:1
+crackToken	..\\app.py	/^def crackToken():$/;"	kind:function	line:63
+graphcall	..\\app.py	/^def graphcall():$/;"	kind:function	line:78
+login	..\\app.py	/^def login():$/;"	kind:function	line:49
+logout	..\\app.py	/^def logout():$/;"	kind:function	line:36
+main	..\\app.py	/^def main():$/;"	kind:function	line:44
+signout	..\\app.py	/^def signout():$/;"	kind:function	line:27
+userName	..\\app.py	/^userName = "None"$/;"	kind:variable	line:13

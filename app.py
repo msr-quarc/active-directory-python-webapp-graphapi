@@ -4,17 +4,20 @@ import uuid
 import requests
 import config
 from urllib.parse import urlencode
+from flask_bootstrap import Bootstrap
 
 app = flask.Flask(__name__)
 app.debug = True
 app.secret_key = 'development'
+bootstrap = Bootstrap(app)
+userName = "None"
 
-# Local or remote...
+########################################################### Local or remote...
 # BASE_URL = 'http://localhost:5000'
 BASE_URL = 'https://weckerPythonWebApp.azurewebsites.net'
 
 AUTHORITY_URL = config.AUTHORITY_HOST_URL + '/' + config.TENANT
-REDIRECT_URI = '{}/landingPage'.format(BASE_URL)
+REDIRECT_URI = f'{BASE_URL}/landingPage'
 TEMPLATE_AUTHZ_URL = (AUTHORITY_URL + '/oauth2/authorize?' +
                       'response_type=code&client_id={}&redirect_uri={}&' +
                       'state={}&resource={}')
@@ -26,18 +29,20 @@ def signout():
     logout_url = f'{AUTHORITY_URL}/oauth2/logout?{logout_params}'
     resp = flask.Response(status=307)
     resp.headers['location'] = logout_url
+    userName = "None"
     return resp
 
 @app.route("/logout")
 def logout():
-    login_url = '{}/login'.format(BASE_URL)
+    index_url = '{}/'.format(BASE_URL)
     resp = flask.Response(status=307)
-    resp.headers['location'] = login_url
+    resp.headers['location'] = index_url
+    userName = "None"
     return resp
 
 @app.route("/")
 def main():
-    return flask.render_template('index.html')
+    return flask.render_template('index.html', userName=userName)
 
 
 @app.route("/login")
@@ -55,7 +60,7 @@ def login():
 
 
 @app.route("/landingPage")
-def main_logic():
+def crackToken():
     code = flask.request.args['code']
     state = flask.request.args['state']
     if state != flask.session['state']:
@@ -72,6 +77,7 @@ def main_logic():
 @app.route('/graphcall')
 def graphcall():
     if 'access_token' not in flask.session:
+        userName = "None"
         return flask.redirect(flask.url_for('login'))
     endpoint = config.RESOURCE + '/' + config.API_VERSION + '/me/'
     http_headers = {'Authorization': 'Bearer ' + flask.session.get('access_token'),
@@ -80,7 +86,8 @@ def graphcall():
                     'Content-Type': 'application/json',
                     'client-request-id': str(uuid.uuid4())}
     graph_data = requests.get(endpoint, headers=http_headers, stream=False).json()
-    return flask.render_template('display_graph_info.html', graph_data=graph_data)
+    userName = graph_data['userPrincipalName']
+    return flask.render_template('display_graph_info.html', graph_data=graph_data, userName=userName)
     
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

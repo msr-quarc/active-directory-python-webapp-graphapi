@@ -1,0 +1,17 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Sample SaaS</title>
+      {% else %}
+      <title>Welcome to the SaaS template</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>General Ops: 
+                <a href="/login">Log In</a>
+                <a href="/signout">Log Out</a>
+        </div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>

@@ -3,7 +3,7 @@ import flask
 import uuid
 import requests
 import config
-
+from urllib.parse import urlencode
 
 app = flask.Flask(__name__)
 app.debug = True
@@ -15,17 +15,29 @@ BASE_URL = 'https://weckerPythonWebApp.azurewebsites.net'
 
 AUTHORITY_URL = config.AUTHORITY_HOST_URL + '/' + config.TENANT
 REDIRECT_URI = '{}/landingPage'.format(BASE_URL)
-TEMPLATE_AUTHZ_URL = ('https://login.microsoftonline.com/{}/oauth2/authorize?' +
+TEMPLATE_AUTHZ_URL = (AUTHORITY_URL + '/oauth2/authorize?' +
                       'response_type=code&client_id={}&redirect_uri={}&' +
                       'state={}&resource={}')
 
 
-@app.route("/")
-def main():
+@app.route("/signout")
+def signout():
+    logout_params = urlencode({'post_logout_redirect_uri':f'{BASE_URL}/logout'})
+    logout_url = f'{AUTHORITY_URL}/oauth2/logout?{logout_params}'
+    resp = flask.Response(status=307)
+    resp.headers['location'] = logout_url
+    return resp
+
+@app.route("/logout")
+def logout():
     login_url = '{}/login'.format(BASE_URL)
     resp = flask.Response(status=307)
     resp.headers['location'] = login_url
     return resp
+
+@app.route("/")
+def main():
+    return flask.render_template('index.html')
 
 
 @app.route("/login")
@@ -33,7 +45,6 @@ def login():
     auth_state = str(uuid.uuid4())
     flask.session['state'] = auth_state
     authorization_url = TEMPLATE_AUTHZ_URL.format(
-        config.TENANT,
         config.CLIENT_ID,
         REDIRECT_URI,
         auth_state,

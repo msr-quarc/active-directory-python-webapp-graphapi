@@ -10,12 +10,11 @@ app.debug = True
 app.secret_key = 'development'
 
 # Local or remote...
-# BASE_URL = 'http://localhost'
+# BASE_URL = 'http://localhost:5000'
 BASE_URL = 'https://weckerPythonWebApp.azurewebsites.net'
 
-PORT = 5000  # A flask app by default runs on PORT 5000
 AUTHORITY_URL = config.AUTHORITY_HOST_URL + '/' + config.TENANT
-REDIRECT_URI = '{}:{}/landingPage'.format(BASE_URL,PORT)
+REDIRECT_URI = '{}/landingPage'.format(BASE_URL)
 TEMPLATE_AUTHZ_URL = ('https://login.microsoftonline.com/{}/oauth2/authorize?' +
                       'response_type=code&client_id={}&redirect_uri={}&' +
                       'state={}&resource={}')
@@ -23,7 +22,7 @@ TEMPLATE_AUTHZ_URL = ('https://login.microsoftonline.com/{}/oauth2/authorize?' +
 
 @app.route("/")
 def main():
-    login_url = '{}:{}/login'.format(BASE_URL,PORT)
+    login_url = '{}/login'.format(BASE_URL)
     resp = flask.Response(status=307)
     resp.headers['location'] = login_url
     return resp

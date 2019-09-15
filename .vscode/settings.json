@@ -1,2 +1,4 @@
 {
+    "appService.defaultWebAppToDeploy": "/subscriptions/916dfd6d-030c-4bd9-b579-7bb6d1926e97/resourceGroups/qio-dev-wecker/providers/Microsoft.Web/sites/weckerPythonWebApp",
+    "appService.deploySubpath": ""
 }

@@ -15,7 +15,7 @@ BASE_URL = 'https://weckerPythonWebApp.azurewebsites.net'
 
 PORT = 5000  # A flask app by default runs on PORT 5000
 AUTHORITY_URL = config.AUTHORITY_HOST_URL + '/' + config.TENANT
-REDIRECT_URI = '{}}:{}/landingPage'.format(BASE_URL,PORT)
+REDIRECT_URI = '{}:{}/landingPage'.format(BASE_URL,PORT)
 TEMPLATE_AUTHZ_URL = ('https://login.microsoftonline.com/{}/oauth2/authorize?' +
                       'response_type=code&client_id={}&redirect_uri={}&' +
                       'state={}&resource={}')

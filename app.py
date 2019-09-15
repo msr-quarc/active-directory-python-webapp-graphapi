@@ -10,7 +10,7 @@ app.secret_key = 'development'
 
 PORT = 5000  # A flask app by default runs on PORT 5000
 AUTHORITY_URL = config.AUTHORITY_HOST_URL + '/' + config.TENANT
-REDIRECT_URI = 'http://localhost:{}/getAToken'.format(PORT)
+REDIRECT_URI = 'http://localhost:{}/landingPage'.format(PORT)
 TEMPLATE_AUTHZ_URL = ('https://login.microsoftonline.com/{}/oauth2/authorize?' +
                       'response_type=code&client_id={}&redirect_uri={}&' +
                       'state={}&resource={}')
@@ -39,7 +39,7 @@ def login():
     return resp
 
 
-@app.route("/getAToken")
+@app.route("/landingPage")
 def main_logic():
     code = flask.request.args['code']
     state = flask.request.args['state']
@@ -66,7 +66,6 @@ def graphcall():
                     'client-request-id': str(uuid.uuid4())}
     graph_data = requests.get(endpoint, headers=http_headers, stream=False).json()
     return flask.render_template('display_graph_info.html', graph_data=graph_data)
-
-
+    
 if __name__ == "__main__":
     app.run()

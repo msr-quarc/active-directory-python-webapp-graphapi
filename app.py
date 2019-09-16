@@ -56,37 +56,32 @@ def landingpage():
         'x-ms-correlationid':       corrId,
         'x-ms-marketplace-token':   flask.request.args['token']
         }
-    rqst                        = requests.post(url,headers=headers)
+    rqst                            = requests.post(url,headers=headers)
     if rqst.status_code != 200:
         flask.flash('Token NOT decoded!')
         resp                        = flask.Response(status=307)
         resp.headers['location']    = BASE_URL + '/'
         return resp
 
-    # Here is where we activate (since the token cracked Ok, we know we are good to go)
-    '''
-            var requestUrl = FluentUriBuilder
-                .Start(this.baseUri)
-                .AddPath("subscriptions")
-                .AddPath(subscriptionId.ToString())
-                .AddPath("activate")
-                .AddQuery(DefaultApiVersionParameterName, this.apiVersion)
-                .Uri;
-
-            requestId = requestId == default ? Guid.NewGuid() : requestId;
-            correlationId = correlationId == default ? Guid.NewGuid() : correlationId;
-
-            var response = await this.SendRequestAndReturnResult(
-                HttpMethod.Post,
-                requestUrl,
-                requestId,
-                correlationId,
-                null,
-                JsonConvert.SerializeObject(subscriptionDetails),
-                cancellationToken);    
-    '''    
-
     info = json.loads(rqst.content)  
+
+    # Here is where we activate (since the token cracked Ok, we know we are good to go)
+    subId                       = info['id']
+    url2                        = f'{FUL_BaseURI}/subscriptions/{subId}/activate?api-version={FUL_ApiVersion}'
+    headers2                    = {
+        'Content-type':             'application/json',
+        'Authorization':            'Bearer ' + code['accessToken'],
+        'x-ms-requestid':           requestId,
+        'x-ms-correlationid':       corrId,
+        }
+    json2                       = {
+        "planId":       planId,
+        "quantity":     ""
+    }
+    rqst2                       = requests.post(url2,headers=headers2,json=json2)
+    if rqst2.status_code != 200:
+        flask.flash('Activation not successful!')
+    
     return flask.render_template('subscribe.html', info=info)
     
 if __name__ == "__main__":

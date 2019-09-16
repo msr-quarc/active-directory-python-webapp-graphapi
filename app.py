@@ -18,17 +18,17 @@ def buildAuthZ(state):
     url     = f'{AAD_URL}/oauth2/authorize'
     url    += '?response_type=code'
     url    += f'&client_id={AAD_ClientId}'
-    url    += f'&redirect_uri={REDIRECT_URI}' 
+    url    += f'&redirect_uri={BASE_URL}/{AAD_Callback}' 
     url    += f'&state={state}'
-    url    += f'&resource={GRA_Resource}'
+    url    += f'&resource={FUL_Resource}'
     return url
 
 def openToken(ctxt,code):
     ''' Crack an AAD token '''
     return  ctxt.acquire_token_with_authorization_code(
         code, 
-        REDIRECT_URI, 
-        GRA_Resource, 
+        f'{BASE_URL}/{AAD_Callback}', 
+        FUL_Resource, 
         AAD_ClientId, 
         AAD_ClientSecret)
 
@@ -54,22 +54,58 @@ def main():
     return flask.render_template('index.html', userName=userName)
 
 
-@app.route("/login")
-def login():
+@app.route("/landingpage")
+def landingpage():
+    flask.session['token']      = flask.request.args['token']
     auth_state                  = str(uuid.uuid4())
     flask.session['state']      = auth_state
-    auth_url                    = buildAuthZ(auth_state)
+
+    context                     = adal.AuthenticationContext(AAD_URL)
+    code                        = context.acquire_token_with_client_credentials(
+        FUL_Resource, FUL_ClientId, FUL_AppKey)
+    flask.session['bearer']     = code['accessToken']
+
+    url                         = f'{FUL_BaseURI}/subscriptions/resolve?api-version={FUL_ApiVersion}'
+    requestId                   = str(uuid.uuid4())
+    corrId                      = str(uuid.uuid4())
+    headers                     = {
+        'Content-type':             'application/json',
+        'Authorization':            'Bearer ' + code['accessToken'],
+        'x-ms-requestid':           requestId,
+        'x-ms-correlationid':       corrId,
+        'x-ms-marketplace-token':   flask.request.args['token']
+        }
+    rqst                        = requests.post(url,headers=headers)
+
     resp                        = flask.Response(status=307)
     resp.headers['location']    = auth_url
     return resp
 
 
-@app.route("/landingPage")
-def crackToken():
-    code                        = flask.request.args['code']
-    state                       = flask.request.args['state']
-    if state != flask.session['state']:
-        raise ValueError("State does not match")
+@app.route("/signin-oidc")
+def signin():
+    bearer                      = flask.request.args['code']
+
+    auth_context                = adal.AuthenticationContext(AAD_URL)
+
+    # First we need a bearer token
+    auth_state                  = str(uuid.uuid4())
+    flask.session['state']      = auth_state
+    auth_url                    = buildAuthZ(auth_state)
+    resp                        = flask.Response(status=307)
+    resp.headers['location']    = auth_url
+
+    url                         = f'{AAD_Host}/{FUL_TenantId}/oauth2/token'
+    headers                     = {'Content-type': 'application/json'}
+    data                        = {
+        'grant_type':       'client_credentials',
+        'Client_id':        FUL_ClientId,
+        'client_secret':    FUL_AppKey,
+        'resource':         FUL_Resource
+    }
+    rqst                            = requests.post(url,headers=headers,json=data)
+
+
     auth_context                    = adal.AuthenticationContext(AAD_URL)
     token_response                  = openToken(auth_context,code)
     flask.session['access_token']   = token_response['accessToken']
@@ -91,4 +127,4 @@ def graphcall():
     return flask.render_template('display_graph_info.html', graph_data=graph_data, userName=userName)
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,ssl_context='adhoc')

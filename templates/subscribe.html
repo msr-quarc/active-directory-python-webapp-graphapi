@@ -2,9 +2,9 @@
 
 {% block app_content %}
 
-<p1><b>User Data:</b> </p1>
+<p1><b>Subscription Data:</b> </p1>
 <table>
-{% for key, value in graph_data.items() %}
+{% for key, value in info.items() %}
    <tr>
         <th> {{ key }} </th>
         <td> {{ value }} </td>

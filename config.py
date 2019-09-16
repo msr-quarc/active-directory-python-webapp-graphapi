@@ -21,4 +21,4 @@ FUL_ClientId        = AAD_ClientId
 FUL_TenantId        = os.environ['PWA_FUL_TenantId']
 FUL_AppKey          = AAD_ClientSecret
 FUL_BaseURI         = "https://marketplaceapi.microsoft.com/api/saas"
-FUL_ApiVersion      = "2018-08-31" # Mock APIs: "2018-09-15", Real APs: "2018-08-31"
+FUL_ApiVersion      = "2018-09-15" # Mock APIs: "2018-09-15", Real APs: "2018-08-31"

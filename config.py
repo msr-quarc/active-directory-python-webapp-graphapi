@@ -2,7 +2,7 @@ import os
 
 # LOCAL or REMOTE:
 BASE_URL        = 'https://localhost:44377'
-#BASE_URL        = 'https://weckerPythonWebApp.azurewebsites.net'
+#BASE_URL        = 'https://weckerContoso.azurewebsites.net'
 
 # Azure Active Directory
 AAD_Host            =  "https://login.microsoftonline.com" # Authority Host
@@ -22,7 +22,3 @@ FUL_TenantId        = os.environ['PWA_FUL_TenantId']
 FUL_AppKey          = AAD_ClientSecret
 FUL_BaseURI         = "https://marketplaceapi.microsoft.com/api/saas"
 FUL_ApiVersion      = "2018-08-31" # Mock APIs: "2018-09-15", Real APs: "2018-08-31"
-
-# Azure Graph
-GRA_Resource        = "https://graph.microsoft.com"  # Add the resource you want the access token for
-GRA_ApiVersion      = 'v1.0'

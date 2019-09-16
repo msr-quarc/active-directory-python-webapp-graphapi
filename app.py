@@ -62,9 +62,31 @@ def landingpage():
         resp                        = flask.Response(status=307)
         resp.headers['location']    = BASE_URL + '/'
         return resp
-        
-    info = json.loads(rqst.content)
-    
+
+    # Here is where we activate (since the token cracked Ok, we know we are good to go)
+    '''
+            var requestUrl = FluentUriBuilder
+                .Start(this.baseUri)
+                .AddPath("subscriptions")
+                .AddPath(subscriptionId.ToString())
+                .AddPath("activate")
+                .AddQuery(DefaultApiVersionParameterName, this.apiVersion)
+                .Uri;
+
+            requestId = requestId == default ? Guid.NewGuid() : requestId;
+            correlationId = correlationId == default ? Guid.NewGuid() : correlationId;
+
+            var response = await this.SendRequestAndReturnResult(
+                HttpMethod.Post,
+                requestUrl,
+                requestId,
+                correlationId,
+                null,
+                JsonConvert.SerializeObject(subscriptionDetails),
+                cancellationToken);    
+    '''    
+
+    info = json.loads(rqst.content)  
     return flask.render_template('subscribe.html', info=info)
     
 if __name__ == "__main__":

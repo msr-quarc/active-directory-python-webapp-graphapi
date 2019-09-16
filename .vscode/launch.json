@@ -16,8 +16,11 @@
             },
             "args": [
                 "run",
+                "--host=localhost",
+                "--port=44377",
                 "--no-debugger",
-                "--no-reload"
+                "--no-reload",
+                "--cert=adhoc"
             ],
             "jinja": true
         }

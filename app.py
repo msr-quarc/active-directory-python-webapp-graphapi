@@ -80,8 +80,10 @@ def landingpage():
     }
     rqst2                       = requests.post(url2,headers=headers2,json=json2)
     if rqst2.status_code != 200:
-        flask.flash('Activation not successful!')
-    
+        flask.flash('Activation was not successful!')
+    else
+        flask.flash("Activiation succeeded!")
+
     return flask.render_template('subscribe.html', info=info)
     
 if __name__ == "__main__":

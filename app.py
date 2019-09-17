@@ -75,7 +75,7 @@ def landingpage():
         'x-ms-correlationid':       corrId,
         }
     json2                       = {
-        "planId":       planId,
+        "planId":       info['planId'],
         "quantity":     ""
     }
     rqst2                       = requests.post(url2,headers=headers2,json=json2)

@@ -35,8 +35,8 @@ def main():
 def webhook():
     return flask.render_template('webhook.html')
 
-@app.route("/landingpage")
 @app.route("/landingpage/")
+@app.route("/landingpage")
 def landingpage():
     if 'token' not in flask.request.args:
         resp                        = flask.Response(status=307)

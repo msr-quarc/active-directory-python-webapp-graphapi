@@ -31,6 +31,10 @@ def main():
     return flask.render_template('index.html')
 
 
+@app.route('/webhook')
+def webhook():
+    return flask.render_template('webhook.html')
+
 @app.route("/landingpage")
 @app.route("/landingpage/")
 def landingpage():

@@ -40,6 +40,7 @@ def main():
     return flask.render_template('index.html')
 
 
+@app.route('/webhook/')
 @app.route('/webhook')
 def webhook():
     args    = flask.request.args

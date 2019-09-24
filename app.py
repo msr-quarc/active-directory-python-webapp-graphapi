@@ -3,14 +3,23 @@ import flask
 import uuid
 import requests
 import json
+import logging
+
 from config import *
 from urllib.parse import urlencode
 from flask_bootstrap import Bootstrap
+from logging.handlers import RotatingFileHandler
 
 app             = flask.Flask(__name__)
 app.debug       = True
 app.secret_key  = 'development'
+logHandler      = RotatingFileHandler("info.log")
+logHandler.setLevel(logging.INFO)
+app.logger.setLevel(logging.INFO)
+app.logger.addHandler(logHandler)
+
 bootstrap       = Bootstrap(app)
+
 
 @app.route("/logout")
 def signout():
@@ -37,6 +46,14 @@ def webhook():
     headers = flask.request.headers
     info    = flask.request.json
     if info is None: info = {}
+
+    app.logger.info('#### ARGS:')
+    app.logger.info(args)
+    app.logger.info('#### HEADERS:')
+    app.logger.info(headers)
+    app.logger.info('#### BODY:')
+    app.logger.info(info)
+    logHandler.flush()
 
     return flask.render_template('webhook.html',args=args,headers=headers,info=info)
 

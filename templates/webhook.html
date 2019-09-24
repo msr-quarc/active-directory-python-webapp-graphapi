@@ -2,6 +2,39 @@
 
 {% block app_content %}
 
-<p1><b>Subscription management is handled automatically.</b> </p1>
+<p1><b>Webhook Args:</b> </p1>
+<br>
+<table border="1" cellpadding="15"  cellspacing="0" align="center" width="30%">
+{% for key, value in args.items() %}
+   <tr>
+        <th> {{ key }} </th>
+        <td> {{ value }} </td>
+   </tr>
+{% endfor %}
+</table>
+
+<br>
+<p1><b>Webhook Headers:</b> </p1>
+<br>
+<table border="1" cellpadding="15"  cellspacing="0" align="center" width="30%">
+{% for key, value in headers.items() %}
+   <tr>
+        <th> {{ key }} </th>
+        <td> {{ value }} </td>
+   </tr>
+{% endfor %}
+</table>
+
+<br>
+<p1><b>Webhook Content`:</b> </p1>
+<br>
+<table border="1" cellpadding="15"  cellspacing="0" align="center" width="30%">
+{% for key, value in info.items() %}
+   <tr>
+        <th> {{ key }} </th>
+        <td> {{ value }} </td>
+   </tr>
+{% endfor %}
+</table>
 
 {% endblock %}

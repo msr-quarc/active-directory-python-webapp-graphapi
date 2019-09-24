@@ -33,7 +33,12 @@ def main():
 
 @app.route('/webhook')
 def webhook():
-    return flask.render_template('webhook.html')
+    args    = flask.request.args
+    headers = flask.request.headers
+    info    = flask.request.json
+    if info is None: info = {}
+
+    return flask.render_template('webhook.html',args=args,headers=headers,info=info)
 
 @app.route("/landingpage/")
 @app.route("/landingpage")
